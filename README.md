@@ -1,1 +1,2 @@
 # Python-Basic-Projects
+This repository features a collection of beginner-friendly Python projects, including games like Rock-Paper-Scissors, Caesar Cipher, and more. Each project is built using simple logic and core Python concepts, making them easy to understand and practice. The aim is to strengthen problem-solving skills while having fun with coding challenges. It serves as a great starting point for anyone who wants to explore Python basics through practical and interactive examples.
