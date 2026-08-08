@@ -1,6 +1,14 @@
-import random
+"""Hangman CLI Word Game.
 
-stages = [r'''
+Features ASCII gallows stage updates, secret word selection from a comprehensive vocabulary,
+letter guess tracking, and remaining life counts.
+"""
+
+import random
+from typing import List, Set
+
+STAGES: List[str] = [
+    r'''
   +---+
   |   |
   O   |
@@ -24,14 +32,15 @@ stages = [r'''
       |
       |
 =========
-''', '''
+''', r'''
   +---+
   |   |
   O   |
  /|   |
       |
       |
-=========''', '''
+=========
+''', r'''
   +---+
   |   |
   O   |
@@ -39,7 +48,7 @@ stages = [r'''
       |
       |
 =========
-''', '''
+''', r'''
   +---+
   |   |
   O   |
@@ -47,7 +56,7 @@ stages = [r'''
       |
       |
 =========
-''', '''
+''', r'''
   +---+
   |   |
       |
@@ -55,9 +64,10 @@ stages = [r'''
       |
       |
 =========
-''']
+'''
+]
 
-logo = r''' 
+LOGO = r''' 
  _                                             
 | |                                            
 | |__   __ _ _ __   __ _ _ __ ___   __ _ _ __  
@@ -67,7 +77,7 @@ logo = r'''
                     __/ |                      
                    |___/    '''
 
-word_list = [
+WORD_LIST: List[str] = [
     'abruptly', 'absurd', 'abyss', 'affix', 'askew', 'avenue', 'awkward',
     'axiom', 'azure', 'bagpipes', 'bandwagon', 'banjo', 'bayou', 'beekeeper',
     'bikini', 'blitz', 'blizzard', 'boggle', 'bookworm', 'boxcar', 'boxful',
@@ -101,48 +111,53 @@ word_list = [
     'yachtsman', 'yippee', 'yoked', 'youthful', 'yummy', 'zephyr', 'zigzag',
     'zigzagging', 'zilch', 'zipper', 'zodiac', 'zombie'
 ]
-lives = 6
-print(logo)
-chosen_word = random.choice(word_list)
-print(chosen_word)
 
-placeholder = ""
-word_length = len(chosen_word)
-for position in range(word_length):
-    placeholder += "_"
-print(placeholder)
 
-game_over = False
-correct_letters = []
+def play_hangman() -> None:
+    """Execute a single interactive session of Hangman."""
+    print(LOGO)
+    chosen_word = random.choice(WORD_LIST)
+    word_length = len(chosen_word)
+    lives = 6
+    guessed_letters: Set[str] = set()
 
-while not game_over:
-    print(f"You have {lives} lives ")
-    guess = input("Guess a letter: ").lower()
-    print(guess)
-    if guess in correct_letters:
-        print(f"You have already guessed {guess}")
-    display = ""
+    game_over = False
 
-    for letter in chosen_word:
-        if letter == guess:
-            display += letter
-            correct_letters.append(guess)
-        elif letter in correct_letters:
-            display += letter
+    print(f"\nWord to guess: {'_ ' * word_length}")
+    print(STAGES[lives])
+
+    while not game_over:
+        guess = input("Guess a letter: ").strip().lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single valid alphabetic letter.")
+            continue
+
+        if guess in guessed_letters:
+            print(f"You have already guessed '{guess}'. Try another letter.")
+            continue
+
+        guessed_letters.add(guess)
+
+        if guess not in chosen_word:
+            lives -= 1
+            print(f"You guessed '{guess}'. That is not in the word. You lost a life!")
+            if lives == 0:
+                game_over = True
+                print(f"\n*********************** YOU LOSE ***********************")
+                print(f"The correct word was: {chosen_word}")
         else:
-            display += "_"
+            print(f"Good guess! '{guess}' is in the word.")
 
-    print(display)
+        display = "".join([letter if letter in guessed_letters else "_" for letter in chosen_word])
+        print(f"\nCurrent word state: {' '.join(display)}")
 
-    if guess not in chosen_word:
-        lives -= 1
-        print(f"You guessed {guess}.Thats not in the word.\nYou lose a life")
-
-        if lives == 0:
+        if "_" not in display:
             game_over = True
-            print(f"***********************IT WAS {chosen_word} YOU LOSE**********************")
+            print("\n**************************** YOU WIN! ****************************")
 
-    if "_" not in display:
-        game_over = True
-        print("****************************YOU WIN****************************")
-    print(stages[lives])
+        print(STAGES[lives])
+
+
+if __name__ == "__main__":
+    play_hangman()
