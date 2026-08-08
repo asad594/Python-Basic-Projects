@@ -1,0 +1,2 @@
+# Core Development Dependencies
+pytest>=7.0.0

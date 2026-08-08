@@ -107,15 +107,21 @@ flowchart TD
    cd Python-Basic-Projects
    ```
 
-2. **Navigate to your desired project directory:**
+2. **Install optional dev requirements:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run automated test suites:**
+   ```bash
+   pytest tests/
+   ```
+
+4. **Navigate to your desired project directory and run:**
    ```bash
    # Example: entering the Blackjack game directory
    cd "Black Jackson Project"
-   ```
-
-3. **Launch the application:**
-   ```bash
-   python main.py
+   python Black_jackson_project.py
    ```
 
 ---
