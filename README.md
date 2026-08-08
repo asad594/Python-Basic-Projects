@@ -2,6 +2,8 @@
 
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Type](https://img.shields.io/badge/Console--Apps-CLI%20Games-blueviolet?style=for-the-badge)](https://docs.python.org/3/)
+[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](https://github.com/asad594/Python-Basic-Projects)
+[![Code Quality](https://img.shields.io/badge/Code%20Style-PEP8-informational?style=for-the-badge&logo=python&logoColor=white)](https://peps.python.org/pep-0008/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](https://makeapullrequest.com)
 
