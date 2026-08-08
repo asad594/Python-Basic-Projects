@@ -1,4 +1,12 @@
-logo = r"""
+"""Dictionary-Based Calculator CLI Application.
+
+Executes arithmetic operations by mapping math operator strings to python functions
+in a dictionary dispatch table, supporting continuous accumulation calculations.
+"""
+
+from typing import Callable, Dict
+
+LOGO = r"""
  _____________________
 |  _________________  |
 | | Pythonista   0. | |  .----------------.  .----------------.  .----------------.  .----------------. 
@@ -14,45 +22,86 @@ logo = r"""
 | |___|___|___| |___| |  '----------------'  '----------------'  '----------------'  '----------------' 
 |_____________________|
 """
-def add(n1,n2):
-    return n1+n2
-def subtract(n1,n2):
-    return n1-n2
-def multiply(n1,n2):
-    return n1*n2
-def divide(n1,n2):
-    return n1/n2
 
-operations={
-    "+":add,
-    "-":subtract,
-    "*":multiply,
-    "/":divide
+
+def add(n1: float, n2: float) -> float:
+    """Return sum of n1 and n2."""
+    return n1 + n2
+
+
+def subtract(n1: float, n2: float) -> float:
+    """Return difference of n1 and n2."""
+    return n1 - n2
+
+
+def multiply(n1: float, n2: float) -> float:
+    """Return product of n1 and n2."""
+    return n1 * n2
+
+
+def divide(n1: float, n2: float) -> float:
+    """Return division of n1 by n2, handling zero division."""
+    if n2 == 0:
+        raise ValueError("Division by zero is undefined.")
+    return n1 / n2
+
+
+OPERATIONS: Dict[str, Callable[[float, float], float]] = {
+    "+": add,
+    "-": subtract,
+    "*": multiply,
+    "/": divide
 }
 
 
-def calculator():
-    print(logo)
-    should_continue=True
-    num1=float(input("Enter the first number : "))
-    while should_continue:
-        for symbols in operations:
-            print(symbols)
-        operational_symbol=input("Enter the operation : ")
-        num2=float(input("Enter the second number : "))
-        result=operations[operational_symbol](num1,num2)
-        print(f"{num1} {operational_symbol} {num2} = {result}")
-        choice=input(f"Type 'y' to continue calculation with {result} and 'n' to start the new calculator or type t to terminate the program : ").lower()
-        if choice=="y":
-            num1=result
-        elif choice=="n":
-            should_continue=False
-            print("\n"*20)
-            calculator()
-        elif choice=="t":
-            should_continue=False
-            print("Thank you for using this calculator")
-        else:
-            print("Invalid input")
+def get_number(prompt: str) -> float:
+    """Prompt user for a numeric input until a valid float is provided."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input! Please enter a valid number.")
 
-calculator()
+
+def calculator() -> None:
+    """Execute continuous dictionary calculator interactive loop."""
+    print(LOGO)
+    should_continue = True
+    num1 = get_number("Enter the first number: ")
+
+    while should_continue:
+        print("\nAvailable Operations:")
+        for symbol in OPERATIONS:
+            print(f"  {symbol}")
+
+        op_symbol = input("Pick an operation: ").strip()
+        if op_symbol not in OPERATIONS:
+            print("Invalid operation selected!")
+            continue
+
+        num2 = get_number("Enter the next number: ")
+
+        try:
+            calculation_function = OPERATIONS[op_symbol]
+            answer = calculation_function(num1, num2)
+            print(f"\nResult: {num1} {op_symbol} {num2} = {answer}")
+        except ValueError as err:
+            print(f"Math Error: {err}")
+            continue
+
+        choice = input(
+            f"\nType 'y' to continue calculating with {answer}, 'n' to start new calculation, or 't' to terminate: "
+        ).strip().lower()
+
+        if choice == "y":
+            num1 = answer
+        elif choice == "n":
+            should_continue = False
+            calculator()
+        else:
+            should_continue = False
+            print("Thank you for using the Python Dictionary Calculator! Goodbye.")
+
+
+if __name__ == "__main__":
+    calculator()
